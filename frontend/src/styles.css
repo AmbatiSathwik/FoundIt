@@ -1,0 +1,126 @@
+.btn,
+.jumbotron,
+.nav :hover {
+  border-radius: 0px;
+}
+
+* {
+  color: #5b5b5b;
+}
+
+body {
+  background: #c1c1c1;
+}
+
+.navbar {
+  background-color: #2c3337;
+  width: 100%;
+}
+
+.homeCard {
+  border-radius: 20px;
+  background-image: linear-gradient(to right, white, #658984);
+  margin: 30px 20px 20px 30px;
+  box-shadow: 8px 8px #979fa4;
+  cursor: default;
+}
+
+a {
+  text-decoration: none;
+}
+
+.homeCard:hover {
+  box-shadow: 8px 8px #61676b;
+}
+
+.hcreverse {
+  background-image: linear-gradient(to right, #658984, white);
+}
+
+.homeCardText {
+  margin-left: 50px;
+  margin-top: 30px;
+  color: #5b5b5b;
+}
+
+.registerCard {
+  border-radius: 20px;
+  background-color: #e2cecf;
+  margin: 40px 20px;
+}
+
+.registerBox {
+  border-radius: 20px;
+  background-color: #c1c1c1;
+  margin: 40px 20px;
+  box-shadow: 5px 5px #979fa4;
+}
+
+.fname,
+.lname,
+.mailId,
+.roll,
+.pass,
+.confpass,
+.username,
+.username-login,
+.itemname,
+.type,
+.date,
+.details,
+.registerButton button {
+  border-radius: 10px;
+  border: 0px;
+}
+
+.registerButton button {
+  background-color: #ed8181;
+  color: #5b5b5b;
+  width: 525px;
+}
+
+.registerImage {
+  height: 100%;
+  width: 100%;
+  background-image: url("./user/NIT-1.jpg");
+  background-size: cover;
+  border-radius: 0px 20px 20px 0px;
+}
+
+.LoginImage {
+  height: 100%;
+  width: 100%;
+  background-image: url("./user/NIT-2.jpeg");
+  background-size: cover;
+  border-radius: 0px 20px 20px 0px;
+}
+
+.reportItemCard {
+  background-color: #eeeaea;
+  border-radius: 20px;
+  box-shadow: 5px 5px #979fa4;
+  margin: 40px 20px;
+}
+
+.addMargintop {
+  margin-top: 20px;
+}
+
+.itemname,
+.type,
+.date {
+  width: 50%;
+}
+
+.reportButton button {
+  background-color: #ed8181;
+  color: #5b5b5b;
+  width: 600px;
+  border-radius: 10px;
+  border: 0px;
+}
+
+.details {
+  width: 60%;
+  height: 100px;
+}
