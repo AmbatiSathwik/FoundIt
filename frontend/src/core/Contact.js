@@ -1,5 +1,8 @@
 import React from "react";
 import Base from "./Base";
+import Coder1 from "./coder.jpg";
+import Coder2 from "./coder-2.jpg";
+import Coder3 from "./coder-3.jpg";
 
 function Contact() {
   return (
@@ -9,8 +12,11 @@ function Contact() {
       <div className="row">
         <div className="col-4" align="center">
           <div className="card shadow">
-            {/* <img className="card-img-top img-thumbnail rounded" height="250px" src="./images/coder-2.jpg" */}
-            {/* alt="Card image cap"> */}
+            <img
+              className="card-img-top img-thumbnail rounded"
+              src={Coder1}
+              alt="Card image cap"
+            />
             <div className="card-body">
               <h5 className="card-title">Vishnu</h5>
               <p className="card-text">CSE, Final year, NIT calicut</p>
@@ -26,8 +32,11 @@ function Contact() {
         </div>
         <div className="col-4" align="center">
           <div className="card shadow">
-            {/* <img className="card-img-top img-thumbnail rounded" height="250px" src="./images/coder.jpg" */}
-            {/* alt="Card image cap"> */}
+          <img
+              className="card-img-top img-thumbnail rounded"
+              src={Coder2}
+              alt="Card image cap"
+            />
             <div className="card-body">
               <h5 className="card-title">Ambati Sathwik</h5>
               <p className="card-text">CSE, Final year, NIT calicut</p>
@@ -41,8 +50,11 @@ function Contact() {
         </div>
         <div className="col-4" align="center">
           <div className="card shadow">
-            {/* <img className="card-img-top img-thumbnail rounded" height="250px" src="./images/coder-3.jpg" */}
-            {/* alt="Card image cap"> */}
+          <img
+              className="card-img-top img-thumbnail rounded"
+              src={Coder3}
+              alt="Card image cap"
+            />
             <div className="card-body">
               <h5 className="card-title">Venkata Akhil</h5>
               <p className="card-text">CSE, Final year, NIT calicut</p>
