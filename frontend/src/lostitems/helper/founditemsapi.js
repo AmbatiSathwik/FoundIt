@@ -74,3 +74,47 @@ export const founditemdetails = (id) => {
       console.log(e);
     });
 };
+
+export const getfoundchat = (chat) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" />;
+  }
+  const token = "Bearer " + localStorage.getItem("jwt").slice(1, -1);
+  return fetch(`${API}getfoundchat`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(chat),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+export const addfoundchat = (chat) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" />;
+  }
+  const token = "Bearer " + localStorage.getItem("jwt").slice(1, -1);
+  return fetch(`${API}addfoundchat`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(chat),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};

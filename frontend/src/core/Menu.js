@@ -47,6 +47,7 @@ const Menu = () => {
             </Nav.Link>
           </Navbar.Brand>
           <Nav className="mr-0">
+            <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/foundItems">Found Items</Nav.Link>
             <Nav.Link href="/lostItems">Lost Items</Nav.Link>
             {showLogin()}

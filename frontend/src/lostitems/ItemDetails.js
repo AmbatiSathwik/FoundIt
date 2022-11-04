@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { Button, Col, Row } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router-dom";
+import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
-import { founditemdetails } from "./helper/founditemsapi";
-import { lostitemdetails } from "./helper/lostitemsapi";
+import {
+  addfoundchat,
+  founditemdetails,
+  getfoundchat,
+} from "./helper/founditemsapi";
+import {
+  addlostchat,
+  getlostchat,
+  lostitemdetails,
+} from "./helper/lostitemsapi";
 import Lost from "./lostitem.jpg";
 
 function ItemDetails() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const id = location.pathname.slice(13, 37);
-  console.log(id);
   const status = location.pathname.slice(38).toUpperCase();
 
   const [details, setDetails] = useState({
@@ -21,9 +30,13 @@ function ItemDetails() {
     firstname: "",
     lastname: "",
     email: "",
+    sid: "",
   });
 
   useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate("/login");
+    }
     if (status === "LOST") {
       lostitemdetails(id).then((res) => {
         setDetails({
@@ -35,6 +48,7 @@ function ItemDetails() {
           firstname: res[1].firstname,
           lastname: res[1].lastname,
           email: res[1].email,
+          sid: res[1]._id,
         });
       });
     } else {
@@ -48,12 +62,94 @@ function ItemDetails() {
           firstname: res[1].firstname,
           lastname: res[1].lastname,
           email: res[1].email,
+          sid: res[1]._id,
         });
       });
     }
   }, []);
 
+  const [chat, setChat] = useState([]);
+
+  useEffect(() => {
+    if (details.sid) {
+      if (status === "LOST") {
+        const tid = localStorage.getItem("id").slice(1, -1);
+        const temp = { fromsid: details.sid, tosid: tid, lid: id };
+        getlostchat(temp).then((res) => {
+          setChat(res);
+        });
+      } else {
+        const tid = localStorage.getItem("id").slice(1, -1);
+        const temp = { fromsid: details.sid, tosid: tid, fid: id };
+        getfoundchat(temp).then((res) => {
+          setChat(res);
+        });
+      }
+    }
+  }, [details.sid]);
+
   const OorF = status === "LOST" ? "Owner" : "Founder";
+
+  const renderChat = (fromsid, message) => {
+    if (details.sid === "") {
+      return <h2>No Chat fetched yet</h2>;
+    }
+    return (
+      <div className="chatcard">
+        <Row>
+          <Col xs={1}>
+            <span>{fromsid === details.sid ? OorF : "You"}:&emsp;</span>
+          </Col>
+          <Col xs={11}>
+            <span>{message}</span>
+          </Col>
+        </Row>
+      </div>
+    );
+  };
+
+  const [message, setMessage] = useState({
+    msg: "",
+  });
+
+  const handleChange = (event) => {
+    setMessage({ ...message, msg: event.target.value });
+  };
+
+  const sendChat = () => {
+    if (status === "LOST") {
+      const fromsid = localStorage.getItem("id").slice(1, -1);
+      const temp = {
+        fromsid: fromsid,
+        tosid: details.sid,
+        lid: id,
+        message: message.msg,
+      };
+      addlostchat(temp)
+        .then((res) => {
+          window.location.reload(false);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      const fromsid = localStorage.getItem("id").slice(1, -1);
+      const temp = {
+        fromsid: fromsid,
+        tosid: details.sid,
+        fid: id,
+        message: message.msg,
+      };
+      console.log(temp);
+      addfoundchat(temp)
+        .then((res) => {
+          window.location.reload(false);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
 
   return (
     <Base title="Item Details">
@@ -123,6 +219,37 @@ function ItemDetails() {
               </div>
             </Col>
           </Row>
+        </div>
+        <br />
+        <div>
+          <h2 className="text-center">Send Message to {OorF}</h2>
+          <div className="mx-5">
+            <br />
+            <textarea
+              name="detail"
+              className="details"
+              type="text"
+              placeholder={`Chat with ${OorF}`}
+              onChange={handleChange}
+            />
+            <Button
+              style={{
+                "background-color": "#ed8181",
+                "margin-left": "50px",
+                "border-radius": "15px",
+              }}
+              onClick={sendChat}
+            >
+              Send
+            </Button>
+          </div>
+        </div>
+        <br />
+        <div>
+          <h2 className="text-center">Previous chats</h2>
+          {chat.map((c) => {
+            return renderChat(c.fromsid, c.message);
+          })}
         </div>
       </div>
     </Base>

@@ -73,3 +73,47 @@ export const lostitemdetails = (id) => {
       console.log(e);
     });
 };
+
+export const getlostchat = (chat) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" />;
+  }
+  const token = "Bearer " + localStorage.getItem("jwt").slice(1, -1);
+  return fetch(`${API}getlostchat`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(chat),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+export const addlostchat = (chat) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" />;
+  }
+  const token = "Bearer " + localStorage.getItem("jwt").slice(1, -1);
+  return fetch(`${API}addlostchat`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(chat),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};

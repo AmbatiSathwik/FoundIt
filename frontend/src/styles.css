@@ -146,3 +146,13 @@ a {
 .pointer {
   cursor: pointer;
 }
+
+.chatcard {
+  background-color: #e0dedf;
+  border-radius: 20px;
+  margin: 20px 20px;
+}
+
+.chatcard span {
+  margin-left: 20px;
+}

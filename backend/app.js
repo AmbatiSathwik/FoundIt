@@ -11,6 +11,8 @@ const auth = require("./middleware/auth");
 
 const LostItem = require("./model/lostitem");
 const FoundItem = require("./model/founditem");
+const LostChat = require("./model/lostchat");
+const FoundChat = require("./model/foundchat");
 
 const app = express();
 app.use(express.json());
@@ -216,7 +218,7 @@ app.post("/founditemdetails", async (req, res) => {
   try {
     const { id } = req.body;
 
-    let item = await FoundItem.findOne({ _id: id });
+    const item = await FoundItem.findOne({ _id: id });
 
     const user = await User.findOne({ _id: item.fsid.toString() });
 
@@ -225,6 +227,108 @@ app.post("/founditemdetails", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+app.post("/getlostchat", async (req, res) => {
+  try {
+    const { fromsid, tosid, lid } = req.body;
+
+    const messages1 = await LostChat.find({ fromsid, tosid, lid });
+    const messages2 = await LostChat.find({
+      fromsid: tosid,
+      tosid: fromsid,
+      lid,
+    });
+
+    function compare(a, b) {
+      if (a._id < b._id) {
+        return -1;
+      }
+      if (a._id > b.Id) {
+        return 1;
+      }
+      return 0;
+    }
+
+    let msg = messages1
+      .concat(messages2)
+      .sort((item) => {
+        return item._id;
+      })
+      .sort(compare)
+      .reverse();
+
+    res.status(200).send(msg);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/addlostchat", auth, async (req, res) => {
+  const { fromsid, tosid, lid, message } = req.body;
+  if (fromsid === tosid) {
+    res.status(400).send({ error: "Chat cant be added" });
+  }
+  const date = new Date().toJSON();
+  await LostChat.create({
+    fromsid,
+    tosid,
+    lid,
+    message,
+    date,
+  });
+  res.status(200).send({ success: "Chat added successfully" });
+});
+
+app.post("/getfoundchat", async (req, res) => {
+  try {
+    const { fromsid, tosid, fid } = req.body;
+
+    const messages1 = await FoundChat.find({ fromsid, tosid, fid });
+    const messages2 = await FoundChat.find({
+      fromsid: tosid,
+      tosid: fromsid,
+      fid,
+    });
+
+    function compare(a, b) {
+      if (a._id < b._id) {
+        return -1;
+      }
+      if (a._id > b.Id) {
+        return 1;
+      }
+      return 0;
+    }
+
+    let msg = messages1
+      .concat(messages2)
+      .sort((item) => {
+        return item._id;
+      })
+      .sort(compare)
+      .reverse();
+
+    res.status(200).send(msg);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/addfoundchat", auth, async (req, res) => {
+  const { fromsid, tosid, fid, message } = req.body;
+  if (fromsid === tosid) {
+    res.status(400).send({ error: "Chat cant be added" });
+  }
+  const date = new Date().toJSON();
+  await FoundChat.create({
+    fromsid,
+    tosid,
+    fid,
+    message,
+    date,
+  });
+  res.status(200).send({ success: "Chat added successfully" });
 });
 
 module.exports = app;
