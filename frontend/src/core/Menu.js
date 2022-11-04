@@ -3,9 +3,11 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Logo from "./logo-new.png";
-import { isAuthenticated } from "../auth/helper";
+import { isAuthenticated, signout } from "../auth/helper";
+import { useNavigate } from "react-router-dom";
 
 const Menu = () => {
+  const navigate = useNavigate();
   const showLogin = () => {
     if (!isAuthenticated()) {
       return (
@@ -18,6 +20,18 @@ const Menu = () => {
       return (
         <>
           <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+          <Nav.Link>
+            <span
+              className="text-warning"
+              onClick={() => {
+                signout(() => {
+                  navigate("/");
+                });
+              }}
+            >
+              Sign Out
+            </span>
+          </Nav.Link>
         </>
       );
     }

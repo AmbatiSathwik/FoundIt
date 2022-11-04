@@ -98,20 +98,18 @@ app.get("/dashboard", auth, (req, res) => {
 app.post("/addlostItems", auth, async (req, res) => {
   try {
     const { itemname, type, details, lsid, date } = req.body;
-  await LostItem.create({
-    itemname,
-    type,
-    details,
-    lsid,
-    date,
-    isDiscovered: false,
-  });
-  res.status(201).send({ success: "Item added successfully" });
-    
+    await LostItem.create({
+      itemname,
+      type,
+      details,
+      lsid,
+      date,
+      isDiscovered: false,
+    });
+    res.status(201).send({ success: "Item added successfully" });
   } catch (error) {
     console.log(error);
   }
-  
 });
 
 app.post("/removelostItems", auth, async (req, res) => {
@@ -151,6 +149,82 @@ app.post("/removefoundItems", auth, async (req, res) => {
     .catch((e) => {
       res.status(400).send(e);
     });
+});
+
+app.get("/alllostitems", async (req, res) => {
+  const items = await LostItem.find();
+  res.status(200).send(items);
+});
+
+app.get("/allfounditems", async (req, res) => {
+  const items = await FoundItem.find();
+  res.status(200).send(items);
+});
+
+app.post("/userdetails", async (req, res) => {
+  try {
+    const { id } = req.body;
+    const user = await User.findOne({ _id: id });
+    if (!user) {
+      res.status(400).send({ error: "No user Found" });
+    }
+    user.password = undefined;
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(400).send({ error: "No user Found" });
+  }
+});
+
+app.post("/getuserlostitems", async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const items = await LostItem.find({ lsid: id });
+    res.status(200).send(items);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/getuserfounditems", async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const items = await FoundItem.find({ fsid: id });
+    res.status(200).send(items);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/lostitemdetails", async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    let item = await LostItem.findOne({ _id: id });
+
+    const user = await User.findOne({ _id: item.lsid.toString() });
+
+    user.password = undefined;
+    res.status(200).send([item, user]);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/founditemdetails", async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    let item = await FoundItem.findOne({ _id: id });
+
+    const user = await User.findOne({ _id: item.fsid.toString() });
+
+    user.password = undefined;
+    res.status(200).send([item, user]);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = app;

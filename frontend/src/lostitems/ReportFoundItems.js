@@ -26,7 +26,7 @@ function ReportFoundItems() {
     const ls = isAuthenticated();
     console.log(ls);
     if (ls) {
-      const lsid = localStorage.getItem("_id");
+      const lsid = localStorage.getItem("id").slice(1, -1);
       reportfound({ itemname, type, details: detail, lsid, date })
         .then((data) => {
           if (data.error) {

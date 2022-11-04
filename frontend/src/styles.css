@@ -124,3 +124,25 @@ a {
   width: 60%;
   height: 100px;
 }
+
+.userCard {
+  background-color: #e0dedf;
+  margin: 20px 10px;
+  border-radius: 20px;
+}
+
+.userCard img {
+  border-radius: 20px 0px 0px 20px;
+}
+
+.userDetails {
+  margin: 10px 20px 10px 10px;
+}
+
+.itemcard {
+  display: inline-block;
+}
+
+.pointer {
+  cursor: pointer;
+}

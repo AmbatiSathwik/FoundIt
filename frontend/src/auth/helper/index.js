@@ -44,14 +44,15 @@ export const authenticate = (data, next) => {
 
 export const signout = (next) => {
   if (typeof window !== undefined) {
+    localStorage.removeItem("id");
     localStorage.removeItem("jwt");
-    localStorage.removeItem("_id");
+
     next();
     return fetch(`${API}signout`, {
       method: "GET",
     })
       .then((res) => {
-        console.log("signout successfull ",res);
+        console.log("signout successfull ", res);
       })
       .catch((e) => {
         console.log(e);
@@ -60,15 +61,12 @@ export const signout = (next) => {
 };
 
 export const isAuthenticated = () => {
-    if (typeof window == undefined) {
-        return false
-        
-    }
-    if(localStorage.getItem("jwt"))
-    {
-        return JSON.parse(localStorage.getItem("jwt"))
-    }
-    else{
-        return false;
-    }
-}
+  if (typeof window == undefined) {
+    return false;
+  }
+  if (localStorage.getItem("jwt")) {
+    return JSON.parse(localStorage.getItem("jwt"));
+  } else {
+    return false;
+  }
+};
