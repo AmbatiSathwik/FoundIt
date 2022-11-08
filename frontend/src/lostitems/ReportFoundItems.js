@@ -27,7 +27,7 @@ function ReportFoundItems() {
     console.log(ls);
     if (ls) {
       const lsid = localStorage.getItem("id").slice(1, -1);
-      reportfound({ itemname, type, details: detail, lsid, date })
+      reportfound({ itemname, type, details: detail, fsid:lsid, date })
         .then((data) => {
           if (data.error) {
             setDetails({ ...details, error: data.error });
